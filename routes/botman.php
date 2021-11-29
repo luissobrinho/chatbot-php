@@ -20,7 +20,7 @@ $botman->hears('([0-9]) day forecast for (.*)', function ($bot, $days, $location
     $response = json_decode(file_get_contents($url));
 
     $bot->reply("The weather in {$response->location->name}, {$response->location->country} is: ");
-    $bot->reply("Forecast for the next  ${days} days");
+    $bot->reply("Forecast for the next ${days} days");
 
     foreach ($response->forecast as $forecastDay) {
         $bot->reply("Forecast for: {$forecastDay->date}");

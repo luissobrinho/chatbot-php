@@ -9,7 +9,7 @@ $botman = app('botman');
 
 $botman->hears('/gif (.*)', function($bot, $name) {
     $KEY = getenv('GIPHY_KEY');
-    $url = "https://api.giphy.com/v1/gifs/search?api_key=${KEY}&q=$name&limit=25&offset=0&rating=g&lang=pt";
+    $url = "https://api.giphy.com/v1/gifs/search?api_key=$KEY&q=$name&limit=25&offset=0&rating=g&lang=pt";
     $results = json_decode(file_get_contents($url));
     $image = $results->data[rand(0, 25)]->images->downsized_large->url;
     $message = OutgoingMessage::create($results->data[0]->title)->withAttachment(
