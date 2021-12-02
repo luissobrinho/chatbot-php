@@ -14,7 +14,14 @@ class OnboardConversation extends Conversation {
     {
         $this->say('Hello');
         $this->ask('What is your name?', function (Answer $answer) {
-            $this->name = $answer->getText();
+            $value = $answer->getText();
+
+            if (trim($value) == '') {
+                $this->repeat('This does not look like a real name, please provide your name.');
+                return;
+            }
+
+            $this->name = $value;
             $this->askAge();
         });
     }
