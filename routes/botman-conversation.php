@@ -13,3 +13,12 @@ $botman->hears('survey', function (BotMan $bot) {
 $botman->hears('Luis', function (BotMan $bot) {
    $bot->reply('Hi there!');
 });
+
+$botman->hears('Help', function (BotMan $bot) {
+   $bot->reply('This is the helping information.');
+})->skipsConversation();
+
+
+$botman->hears('stop', function (BotMan $bot) {
+   $bot->reply('We stopped your conversation.');
+})->stopsConversation();
