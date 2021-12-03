@@ -1,13 +1,13 @@
 <?php
 
-use App\Http\Conversations\OnboardConversation;
+use App\Http\Conversations\ButtonConversation;
 use BotMan\BotMan\BotMan;
 
 /** @var BotMan $botman */
 $botman = app('botman');
 
 $botman->hears('survey', function (BotMan $bot) {
-    $bot->startConversation(new OnboardConversation());
+    $bot->startConversation(new ButtonConversation());
 });
 
 $botman->hears('Luis', function (BotMan $bot) {

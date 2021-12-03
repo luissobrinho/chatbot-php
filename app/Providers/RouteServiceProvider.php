@@ -47,6 +47,7 @@ class RouteServiceProvider extends ServiceProvider
                 ->namespace($this->namespace)
                 ->group(function() {
                     require(base_path('routes/botman.php'));
+                    require(base_path('routes/botman-buttons.php'));
                     require(base_path('routes/botman-conversation.php'));
                     require(base_path('routes/botman-files.php'));
                     require(base_path('routes/botman-slack.php'));

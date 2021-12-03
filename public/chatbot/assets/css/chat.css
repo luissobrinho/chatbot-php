@@ -23,7 +23,6 @@ html, body {
 }
 
 .chat li {
-    padding: 8px;
     padding: 0.5rem;
     font-size: 1.0rem;
     overflow: hidden;
@@ -142,7 +141,7 @@ div.loading-dots .dot {
     height: 8px;
     margin-right: 2px;
     border-radius: 50%;
-    background: #196eb4;
+    background: #b43d19;
     animation: blink 1.4s ease-out infinite;
     animation-fill-mode: both;
 }
@@ -194,7 +193,7 @@ div.loading-dots .dot-lg {
     border-radius: 5px;
     margin: 5px;
     min-width: 100px;
-    background-color: #408591;
+    background-color: #ee5c3c;
     cursor: pointer;
     color: white;
     text-align: center;
