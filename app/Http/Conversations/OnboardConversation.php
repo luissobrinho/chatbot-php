@@ -26,12 +26,22 @@ class OnboardConversation extends Conversation {
         });
     }
 
-    public function askAge()
+    protected function askAge()
     {
         $this->ask('What is your age?', function (Answer $answer) {
             $this->age = $answer->getText();
             $this->say('Nice to meet you, ' . $this->name);
             $this->say('Your age is, ' . $this->age);
+
+            $this->askImage();
+        });
+    }
+
+    protected function askImage() {
+        $this->askForImages('Please send me a picture of you.', function($images) {
+           $this->say('Thank you - I received ' . count($images) . ' images.');
+        }, function() {
+            $this->say('Ummm this does note look like a valid image to me.');
         });
     }
 }
