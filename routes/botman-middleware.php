@@ -2,15 +2,25 @@
 
 use App\Http\Conversations\ButtonConversation;
 use App\Http\Conversations\OnboardConversation;
+use App\Http\Middleware\HeardMiddleware;
 use App\Http\Middleware\ReceivedMiddleware;
 use BotMan\BotMan\BotMan;
 
 /** @var BotMan $botman */
 $botman = app('botman');
 
+$botman->middleware->heard(new HeardMiddleware());
 $botman->middleware->received(new ReceivedMiddleware());
 
-$botman->hears('(.*)', function (BotMan $bot) {
+$botman->hears('hi', function (BotMan $bot) {
     $timestamp = $bot->getMessage()->getExtras('timestamp');
-    $bot->reply($timestamp . ':' . $bot->getMessage()->getText());
+    $heard = $bot->getMessage()->getExtras('heard');
+    $bot->reply($heard . ':' . $bot->getMessage()->getText());
+});
+
+
+$botman->fallback(function (Botman $bot) {
+    $timestamp = $bot->getMessage()->getExtras('timestamp');
+    $heard = $bot->getMessage()->getExtras('heard');
+    $bot->reply($heard . ':' . 'I did not understand you');
 });
