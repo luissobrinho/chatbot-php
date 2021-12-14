@@ -53,7 +53,9 @@ $botman->fallback(function (Botman $bot) {
     $bot->reply($heard . ':' . 'I did not understand you');
 });
 
+$botman->group(['middleware' => new MatchingMiddleware], function ($botman) {
+    $botman->hears('admin', function (BotMan $bot) {
+        $bot->reply('Welcome to the admin section');
+    });
+});
 
-$botman->hears('admin', function (BotMan $bot) {
-    $bot->reply('Welcome to the admin section');
-})->middleware(new MatchingMiddleware);
