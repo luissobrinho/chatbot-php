@@ -48,12 +48,13 @@ class RouteServiceProvider extends ServiceProvider
                 ->group(function() {
 //                    require(base_path('routes/botman.php'));
 //                    require(base_path('routes/botman-buttons.php'));
-                    require(base_path('routes/botman-dialogflow.php'));
+//                    require(base_path('routes/botman-dialogflow.php'));
 //                    require(base_path('routes/botman-conversation.php'));
 //                    require(base_path('routes/botman-files.php'));
 //                    require(base_path('routes/botman-files.php'));
 //                    require(base_path('routes/botman-middleware.php'));
 //                    require(base_path('routes/botman-user.php'));
+                    require(base_path('routes/botman-todo.php'));
                     require(base_path('routes/web.php'));
                 });
         });
