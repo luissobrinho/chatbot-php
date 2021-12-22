@@ -47,6 +47,17 @@ $botman->hears("finish todo ([0-9])", function (BotMan $bot, $id) {
             'completed' => true,
         ]);
 
-        $bot->reply("Whohoo, you finished {$todo->getAttribute('task')}!");
+        $bot->reply("Whohoo, you finished \"{$todo->getAttribute('task')}\"!");
+    }
+});
+
+$botman->hears("delete todo ([0-9])", function (BotMan $bot, $id) {
+    $todo = Todo::find($id);
+
+    if (is_null($todo)) {
+        $bot->reply("Sorry, I could not find the todo '$id'");
+    } else {
+        $todo->delete();
+        $bot->reply("You successfully deleted todo \"{$todo->getAttribute('task')}\"!");
     }
 });
