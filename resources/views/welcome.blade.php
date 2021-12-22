@@ -140,8 +140,7 @@
                 aboutText: '⚡ Powered by Centrais VoIP',
                 bubbleAvatarUrl: 'https://www.centraisvoip.com.br/wp-content/uploads/2021/05/CENTRAIS-VOIP-LOGOTIPO.png',
                 headerTextColor: '#fff',
-                chatId: 'TENENT_ID',
-                userId: 'LOGGED_USER',
+                chatId: 'TENANT_ID',
                 alwaysUseFloatingButton: true
 
             };

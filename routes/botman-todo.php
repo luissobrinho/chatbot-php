@@ -10,7 +10,9 @@ use BotMan\BotMan\Messages\Incoming\Answer;
 $botman = app('botman');
 
 $botman->hears('show my todos', function (BotMan $bot) {
-    $todos = Todo::all();
+    $todos = Todo::where('completed', false)
+        ->where('user_id', $bot->getMessage()->getSender())
+        ->get();
     if ($todos->count() > 0) {
         $bot->reply('Your todos are:');
         $todos->each(function (Todo $todo) use ($bot) {
@@ -24,6 +26,7 @@ $botman->hears('show my todos', function (BotMan $bot) {
 $botman->hears("add new todo (.*)", function (BotMan $bot, $task) {
    Todo::create([
        'task' => $task,
+       'user_id' => $bot->getMessage()->getSender(),
    ]);
    $bot->reply("You added a new todo for '{$task}'");
 });
@@ -32,6 +35,7 @@ $botman->hears("add new todo", function (BotMan $bot) {
     $bot->ask('Which task do you want to add?', function (Answer $answer, Conversation $conversation) {
         Todo::create([
             'task' => $answer,
+            'user_id' => $conversation->getBot()->getMessage()->getSender(),
         ]);
         $conversation->say("You added a new todo for '{$answer}'");
     });
