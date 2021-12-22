@@ -5,18 +5,33 @@ use App\Models\Todo;
 use BotMan\BotMan\BotMan;
 use BotMan\BotMan\Messages\Conversations\Conversation;
 use BotMan\BotMan\Messages\Incoming\Answer;
+use BotMan\Drivers\Telegram\Extensions\Keyboard;
+use BotMan\Drivers\Telegram\Extensions\KeyboardButton;
 
 /** @var BotMan $botman */
 $botman = app('botman');
 
+$botman->hears('/start', function ($bot) {
+    $bot->reply('👋 Hi! I am the Build A Chatbot Todo bot');
+    $bot->reply('You can use "add new todo" to add new todos');
+});
+
 $botman->hears('show my todos', function (BotMan $bot) {
+    $bot->typesAndWaits(1);
     $todos = Todo::where('completed', false)
         ->where('user_id', $bot->getMessage()->getSender())
         ->get();
     if ($todos->count() > 0) {
         $bot->reply('Your todos are:');
         $todos->each(function (Todo $todo) use ($bot) {
-            $bot->reply("{$todo->getAttribute('id')} - {$todo->getAttribute('task')}");
+            $kaybord = Keyboard::create()->addRow(
+                KeyboardButton::create('Mark completed')
+                    ->callbackData("finish todo {$todo->getAttribute('id')}"),
+                KeyboardButton::create('Delete')
+                    ->callbackData("delete todo {$todo->getAttribute('id')}")
+            );
+            $bot->reply("{$todo->getAttribute('id')} - {$todo->getAttribute('task')}",
+                $kaybord->toArray());
         });
     } else {
         $bot->reply('You do not have any todos.');
