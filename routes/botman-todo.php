@@ -14,7 +14,7 @@ $botman->hears('show my todos', function (BotMan $bot) {
     if ($todos->count() > 0) {
         $bot->reply('Your todos are:');
         $todos->each(function (Todo $todo) use ($bot) {
-            $bot->reply($todo->getAttribute('task'));
+            $bot->reply("{$todo->getAttribute('id')} - {$todo->getAttribute('task')}");
         });
     } else {
         $bot->reply('You do not have any todos.');
@@ -35,5 +35,18 @@ $botman->hears("add new todo", function (BotMan $bot) {
         ]);
         $conversation->say("You added a new todo for '{$answer}'");
     });
+});
 
+$botman->hears("finish todo ([0-9])", function (BotMan $bot, $id) {
+    $todo = Todo::find($id);
+
+    if (is_null($todo)) {
+        $bot->reply("Sorry, I could not find the todo '$id'");
+    } else {
+        $todo->update([
+            'completed' => true,
+        ]);
+
+        $bot->reply("Whohoo, you finished {$todo->getAttribute('task')}!");
+    }
 });
