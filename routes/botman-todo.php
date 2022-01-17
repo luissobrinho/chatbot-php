@@ -3,16 +3,21 @@
 use App\Http\Conversations\ButtonConversation;
 use App\Models\Todo;
 use BotMan\BotMan\BotMan;
+use BotMan\BotMan\Drivers\DriverManager;
 use BotMan\BotMan\Messages\Conversations\Conversation;
 use BotMan\BotMan\Messages\Incoming\Answer;
 use BotMan\Drivers\Telegram\Extensions\Keyboard;
 use BotMan\Drivers\Telegram\Extensions\KeyboardButton;
+use VoIPForAll\Drivers\WhatsApp\WhatsAppDriver;
 
 /** @var BotMan $botman */
 $botman = app('botman');
 
-$botman->hears('/start', function ($bot) {
-    $bot->reply('👋 Hi! I am the Build A Chatbot Todo bot');
+//DriverManager::loadDriver(WhatsAppDriver::class);
+
+$botman->hears('/start', function (BotMan $bot) {
+    $bot->reply('👋 Hi ' . $bot->getUser()->getFirstName() . '!');
+    $bot->reply(' I am the Build A Chatbot Todo bot');
     $bot->reply('You can use "add new todo" to add new todos');
 });
 
@@ -23,6 +28,7 @@ $botman->hears('show my todos', function (BotMan $bot) {
         ->get();
     if ($todos->count() > 0) {
         $bot->reply('Your todos are:');
+        $bot->reply('ID - NAME');
         $todos->each(function (Todo $todo) use ($bot) {
             $kaybord = Keyboard::create()->addRow(
                 KeyboardButton::create('Mark completed')
@@ -56,7 +62,7 @@ $botman->hears("add new todo", function (BotMan $bot) {
     });
 });
 
-$botman->hears("finish todo ([0-9])", function (BotMan $bot, $id) {
+$botman->hears("finish todo (.*)", function (BotMan $bot, $id) {
     $todo = Todo::find($id);
 
     if (is_null($todo)) {
@@ -70,7 +76,7 @@ $botman->hears("finish todo ([0-9])", function (BotMan $bot, $id) {
     }
 });
 
-$botman->hears("delete todo ([0-9])", function (BotMan $bot, $id) {
+$botman->hears("delete todo (.*)", function (BotMan $bot, $id) {
     $todo = Todo::find($id);
 
     if (is_null($todo)) {
@@ -79,4 +85,16 @@ $botman->hears("delete todo ([0-9])", function (BotMan $bot, $id) {
         $todo->delete();
         $bot->reply("You successfully deleted todo \"{$todo->getAttribute('task')}\"!");
     }
+});
+
+$botman->fallback(function ($bot) {
+    $message = $bot->getMessage();
+    $bot->reply('Sorry, I do not understand *' . $message->getText() .  '*.');
+    $bot->reply('Here is a list of commands I understand: ...');
+    $bot->reply('/start');
+    $bot->reply('show my todos');
+    $bot->reply('add new todo {NAME}');
+    $bot->reply('add new todo');
+    $bot->reply('finish todo {ID}');
+    $bot->reply('delete todo {ID}');
 });

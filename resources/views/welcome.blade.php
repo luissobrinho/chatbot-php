@@ -131,7 +131,7 @@
 
         <script>
             var botmanWidget = {
-                frameEndpoint: '{{ secure_asset('chatbot/chat.html') }}',
+                frameEndpoint: '{{ asset('chatbot/chat.html') }}',
                 placeholderText: 'Envie uma mensagem...',
                 title: 'Centrais VoIP Chatbot',
                 mainColor: '#ee5c3c',
@@ -145,6 +145,6 @@
 
             };
         </script>
-        <script src='{{ secure_asset('chatbot/js/widget.js') }}'></script>
+        <script src='{{ asset('chatbot/js/widget.js') }}'></script>
     </body>
 </html>
